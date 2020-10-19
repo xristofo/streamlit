@@ -1,145 +1,70 @@
 import json
+import boto3
 
-def get_patient_record():
+def get_patient_record(patient_code):
 
-	jsonstring = """{
-	"Diagnoses": [
-		{
-			"date": "1/5/2005",
-			"diagnosis_code": "5245",
-			"medication_code": "0056"
-		},
-		{
-			"date": "10/12/2007",
-			"diagnosis_code": "6545",
-			"medication_code": "0025"
-		}
-	]
-	}"""
+	jsonfile = patient_code+'.json'
+
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = jsonfile
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
 
 	data  = json.loads(jsonstring)
+
 	return json.dumps(data['Diagnoses'])
 
 def get_patient_details(patient_id, field):
 
-	array = """{
-	"Patients": [
-		{
-			"Surname": "Kostas",
-			"Name": "Kosta",
-			"Code": "A001",
-			"Telephone": "1234567890",
-			"Birthdate": "25/03/1995",
-			"Sex": "M",
-			"Address": {
-				"Street": "Georgiou Evagorou",
-				"Number": 23,
-				"PCode": 5568,
-				"City": "Limassol"
-			}
-		},
-		{
-			"Surname": "Ioannou",
-			"Name": "Marios",
-			"Code": "A002",
-			"Telephone": "1234567898",
-			"Birthdate": "5/11/1983",
-			"Sex": "M",
-			"Address": {
-				"Street": "Athinwn",
-				"Number": 3,
-				"PCode": 4168,
-				"City": "Limassol"
-			}
-		}
-	]
-	}"""
-	
-	data  = json.loads(array)
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'patients.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
 	
 	return data['Patients'][patient_id][field]
 
 def get_patient_id(searchkey, keyvalue):
 
-	array = """{
-	"Patients": [
-		{
-			"Surname": "Kostas",
-			"Name": "Kosta",
-			"Code": "A001",
-			"Telephone": "1234567890",
-			"Birthdate": "25/03/1995",
-			"Sex": "M",
-			"Address": {
-				"Street": "Georgiou Evagorou",
-				"Number": 23,
-				"PCode": 5568,
-				"City": "Limassol"
-			}
-		},
-		{
-			"Surname": "Ioannou",
-			"Name": "Marios",
-			"Code": "A002",
-			"Telephone": "1234567898",
-			"Birthdate": "5/11/1983",
-			"Sex": "M",
-			"Address": {
-				"Street": "Athinwn",
-				"Number": 3,
-				"PCode": 4168,
-				"City": "Limassol"
-			}
-		}
-	]
-	}"""
-	
-	data  = json.loads(array)
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'patients.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
 
 	for x in range(len(data['Patients'])):
 		if data['Patients'][x][searchkey]==keyvalue:
 			return x
 
-
-
 	return -1
 
 def get_patients(searchkey):
 
-	array = """{
-	"Patients": [
-		{
-			"Surname": "Kostas",
-			"Name": "Kosta",
-			"Code": "A001",
-			"Telephone": "1234567890",
-			"Birthdate": "25/03/1995",
-			"Sex": "M",
-			"Address": {
-				"Street": "Georgiou Evagorou",
-				"Number": 23,
-				"PCode": 5568,
-				"City": "Limassol"
-			}
-		},
-		{
-			"Surname": "Ioannou",
-			"Name": "Marios",
-			"Code": "A002",
-			"Telephone": "1234567898",
-			"Birthdate": "5/11/1983",
-			"Sex": "M",
-			"Address": {
-				"Street": "Athinwn",
-				"Number": 3,
-				"PCode": 4168,
-				"City": "Limassol"
-			}
-		}
-	]
-	}"""
-	
-	data  = json.loads(array)
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'patients.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
+
 	rlist = []
 
 	for x in range(len(data['Patients'])):
@@ -149,35 +74,17 @@ def get_patients(searchkey):
 
 def get_medicines(searchkey):
 
-	array = """{
-	"Medicines": [
-		{
-			"Company": "Bayer",
-			"Brand": "Ominaxil",
-			"Code": "0025",
-			"Supplier": "MJ Medicines Ltd",
-			"key_ingredient": "Paracetamol",
-			"Contraindications": [
-				"0001",
-				"0012",
-				"1245"
-			]
-		},
-		{
-			"Company": "Novartis",
-			"Brand": "Parasorilax",
-			"Code": "3350",
-			"Supplier": "Medicines Ltd",
-			"key_ingredient": "Aspirin",
-			"Contraindications": [
-				"0052",
-				"5245"
-			]
-		}
-	]
-	}"""
-	
-	data  = json.loads(array)
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'medicines.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
+
 	rlist = []
 
 	for x in range(len(data['Medicines'])):
@@ -188,35 +95,17 @@ def get_medicines(searchkey):
 
 def get_Contraindications(searchkey, keyvalue):
 
-	array = """{
-	"Medicines": [
-		{
-			"Company": "Bayer",
-			"Brand": "Ominaxil",
-			"Code": "0025",
-			"Supplier": "MJ Medicines Ltd",
-			"key_ingredient": "Paracetamol",
-			"Contraindications": [
-				"5245",
-				"0012",
-				"1245"
-			]
-		},
-		{
-			"Company": "Novartis",
-			"Brand": "Parasorilax",
-			"Code": "3350",
-			"Supplier": "Medicines Ltd",
-			"key_ingredient": "Aspirin",
-			"Contraindications": [
-				"0052",
-				"0012"
-			]
-		}
-	]
-	}"""
-	
-	data  = json.loads(array)
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'medicines.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
+
 
 	for x in range(len(data['Medicines'])):
 		if data['Medicines'][x][searchkey]==keyvalue:
@@ -225,35 +114,16 @@ def get_Contraindications(searchkey, keyvalue):
 
 def get_medicine_id(searchkey, keyvalue):
 
-	array = """{
-	"Medicines": [
-		{
-			"Company": "Bayer",
-			"Brand": "Ominaxil",
-			"Code": "0025",
-			"Supplier": "MJ Medicines Ltd",
-			"key_ingredient": "Paracetamol",
-			"Contraindications": [
-				"5245",
-				"0012",
-				"1245"
-			]
-		},
-		{
-			"Company": "Novartis",
-			"Brand": "Parasorilax",
-			"Code": "3350",
-			"Supplier": "Medicines Ltd",
-			"key_ingredient": "Aspirin",
-			"Contraindications": [
-				"0052",
-				"0012"
-			]
-		}
-	]
-	}"""
-	
-	data  = json.loads(array)
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'medicines.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
 
 	for x in range(len(data['Medicines'])):
 		if data['Medicines'][x][searchkey]==keyvalue:
@@ -261,34 +131,36 @@ def get_medicine_id(searchkey, keyvalue):
 
 def get_medicine_details(medicine_id, field):
 
-	array = """{
-	"Medicines": [
-		{
-			"Company": "Bayer",
-			"Brand": "Ominaxil",
-			"Code": "0025",
-			"Supplier": "MJ Medicines Ltd",
-			"key_ingredient": "Paracetamol",
-			"Contraindications": [
-				"5245",
-				"0012",
-				"1245"
-			]
-		},
-		{
-			"Company": "Novartis",
-			"Brand": "Parasorilax",
-			"Code": "3350",
-			"Supplier": "Medicines Ltd",
-			"key_ingredient": "Aspirin",
-			"Contraindications": [
-				"0052",
-				"0012"
-			]
-		}
-	]
-	}"""
-	
-	data  = json.loads(array)
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'medicines.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
 	
 	return data['Medicines'][medicine_id][field]
+
+def get_alternative_medicine(key_ingredient, rejected_medicine):
+
+	s3 = boto3.client('s3',aws_access_key_id='AKIAI47GTGZHLJKN6WLQ',
+                      aws_secret_access_key='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')
+
+	bucket = 'cei521'
+	key = 'medicines.json'
+	obj = s3.get_object(Bucket=bucket, Key=key)    
+
+	jsonstring = obj['Body'].read()
+
+	data  = json.loads(jsonstring)
+	#array = medicines
+	#data  = json.loads(array)
+
+	for x in range(len(data['Medicines'])):
+		if (data['Medicines'][x]['key_ingredient']==key_ingredient) and (data['Medicines'][x]['Brand']!=rejected_medicine):
+			return data['Medicines'][x]['Brand']
+
+	return ""

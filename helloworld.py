@@ -3,7 +3,7 @@ from PIL import Image
 import myfunctions as mf
 import pandas as pd
 
-col1, col2 = st.beta_columns(2)
+col1, col2, col3 = st.beta_columns(3)
 
 with col1:
 	st.header("")
@@ -12,6 +12,10 @@ with col1:
 with col2:
 	st.header("")
 	st.image("https://www.cut.ac.cy/digitalAssets/17/17780_1logo-eut.png", use_column_width=True)
+
+with col3:
+	st.header("")
+	st.image("http://seiis.cut.ac.cy/images/seiislogo.png", use_column_width=True)
 
 st.title("CEI 521 (463)")
 st.header("Advanced Topics in Software Engineering")
@@ -36,7 +40,8 @@ if selected_patient != 'Select:':
 	st.write('Telephone:', mf.get_patient_details(patiend_id, "Telephone"))
 	st.text("*"*91)
 
-	df = pd.read_json (mf.get_patient_record())
+	patient_code = mf.get_patient_details(patiend_id, "Code")
+	df = pd.read_json (mf.get_patient_record(patient_code))
 
 	st.write("Visits")
 	st.write(df)
@@ -63,6 +68,13 @@ if selected_patient != 'Select:':
 			
 			medicine_id = mf.get_medicine_id("Brand", selected_medicine)
 			key_ingredient = mf.get_medicine_details(medicine_id, "key_ingredient")
+			rejected_medicine = selected_medicine
+			suggested_medicine = mf.get_alternative_medicine(key_ingredient, rejected_medicine)
+			
+			if not suggested_medicine:
+				st.error('No Alternative... Sorry!')
+			else:	
+				st.success('Please consider '+suggested_medicine+ ' as alternative medication!')
 		else: 
-			st.balloons()
+			#st.balloons()
 			st.success('Ok')
