@@ -1,4 +1,3 @@
-
 altair == 4.1.0
 bokeh == 2.2.3
 numpy == 1.19.2
