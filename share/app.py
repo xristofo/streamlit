@@ -17,7 +17,7 @@ st.sidebar.text("")
 st.sidebar.text("")
 
 st.sidebar.title("🔗 Sources")
-st.sidebar.info('Cyprus National Open Data Portal (https://www.data.gov.cy/)')
+st.sidebar.info('[Cyprus National Open Data Portal](https://www.data.gov.cy/)')
 
 st.sidebar.title("🛈 About") 
 st.sidebar.info('This web-app was created and maintained by andreas christoforou')
