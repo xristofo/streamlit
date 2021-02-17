@@ -25,7 +25,7 @@ def app():
     st.sidebar.info('[Cyprus National Open Data Portal](https://www.data.gov.cy/)')
 
     st.sidebar.title("🛈 About") 
-    st.sidebar.info('This web-app was created and maintained by andreas christoforou')
+    st.sidebar.info('Created and maintained by andreas christoforou')
 
     with st.spinner(text='Loading Data! Please wait...'):
         cyprus_df = load_data()
