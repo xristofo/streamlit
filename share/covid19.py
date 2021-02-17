@@ -75,7 +75,7 @@ def plot_date(df, selection, colors_dict, yaxistype):
         plot.line(df['date'], df[selected_column], legend_label=selected_column, line_width=2, alpha=0.5, color=linecolor)
 
     plot.legend.location = "top_left"
-    st.bokeh_chart(plot)
+    st.bokeh_chart(plot, use_container_width=True)
 
 def data_cleaning(df):
     
