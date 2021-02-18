@@ -36,22 +36,43 @@ def app():
     colors_dict = {'daily new cases':'#1f77b4','daily deaths':'#2ca02c','Hospitalised Cases':'#9467bd','Cases In ICUs':'#e377c2','total_daily tests performed':'#bcbd22'}
 
     #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
+    col1, col2, col3 = st.beta_columns(3)
+    col4, col5, col6 = st.beta_columns(3)
+    
+    with col1:
+        st.warning('Confirmed cases: '+str(int(cyprus_df['total cases'].iloc[-1])))
 
-    from_date = st.date_input("From Date:",datetime.date(2020, 9, 1))
-    to_date = st.date_input("To Date:",datetime.date.today())
-    filtered_df = cyprus_df[cyprus_df["date"].isin(pd.date_range(from_date, to_date))]
+    with col2:
+        st.success('Total tests: '+str(int(cyprus_df['total tests'].iloc[-1])))
 
-    multiselection = st.multiselect("Select features:", features, default=features)
+    with col3:
+        st.error('Deaths: '+str(int(cyprus_df['total deaths'].iloc[-1])))
 
-    if st.checkbox('Option 1: Logarithmic scale'):
-        yaxistype="log"
-    else:
-        yaxistype="linear"
 
-    if st.checkbox('Option 2: 5 Days Moving Average'):
-        plot_df = filtered_df.rolling(5, win_type=None).mean()
-    else:
-        plot_df = filtered_df
+    with col4:
+        st.subheader("Dates")
+        from_date = st.date_input("From Date:",datetime.date(2020, 9, 1))
+        to_date = st.date_input("To Date:",datetime.date.today())
+        filtered_df = cyprus_df[cyprus_df["date"].isin(pd.date_range(from_date, to_date))]
+
+    with col5:
+        st.subheader("Options")
+        if st.checkbox('Logarithmic scale'):
+            yaxistype="log"
+        else:
+            yaxistype="linear"
+
+        if st.checkbox('5 Days Moving Average'):
+            plot_df = filtered_df.rolling(5, win_type=None).mean()
+        else:
+            plot_df = filtered_df
+
+    with col6:
+        st.subheader("Features")
+        multiselection = st.multiselect("", features, default=features)
+
+    
+
 
     plot_df['date']=filtered_df["date"]
 
