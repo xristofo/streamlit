@@ -87,7 +87,7 @@ def app():
 
     	plot_date(plot_df, multiselection, colors_dict, yaxistype)
 
-    st.subheader('Rapid test units for '+date.today().strftime('%d-%m-%Y')+'by [@lolol20](https://twitter.com/lolol20)')
+    st.subheader('Rapid test units for '+date.today().strftime('%d-%m-%Y')+' (by [@lolol20](https://twitter.com/lolol20))')
 
     components.iframe("https://covidmap.cy/",height=480,scrolling=False)
 
