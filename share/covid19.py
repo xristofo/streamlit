@@ -89,7 +89,7 @@ def app():
 
     st.subheader('Rapid test units for '+date.today().strftime('%d-%m-%Y'))
 
-    components.iframe("https://www.google.com/maps/d/embed?mid=1AXahGyHjpt6CPhFE00_02Oo9u992VaZA",height=480,scrolling=False)
+    components.iframe("https://covidmap.cy/",height=480,scrolling=False)
 
 
 
