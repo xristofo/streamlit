@@ -22,13 +22,15 @@ def app():
     st.sidebar.text("")
 
     st.sidebar.title("🔗 Sources")
-    st.sidebar.info('[Cyprus National Open Data Portal](https://www.data.gov.cy/)')
+    st.sidebar.info('[Cyprus National Open Data Portal](https://www.data.gov.cy/)'+'\r'+'[Our World in Data](https://ourworldindata.org/)')
+    
 
     st.sidebar.title("🛈 About") 
-    st.sidebar.info('Created and maintained by andreas christoforou')
+    st.sidebar.info('Created and maintained by:'+'\r'+'[andreas christoforou](xristofo@gmail.com)')
 
     with st.spinner(text='Loading Data! Please wait...'):
         cyprus_df = load_data()
+        cyprus_vac_df = load_data_vac()
        
     st.text("")
 
@@ -36,8 +38,8 @@ def app():
     colors_dict = {'daily new cases':'#1f77b4','daily deaths':'#2ca02c','Hospitalised Cases':'#9467bd','Cases In ICUs':'#e377c2','total_daily tests performed':'#bcbd22'}
 
     #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
-    col1, col2, col3 = st.beta_columns(3)
-    col4, col5, col6 = st.beta_columns(3)
+    col1, col2, col3, col4 = st.beta_columns(4)
+    col5, col6, col7 = st.beta_columns(3)
     
     with col1:
         st.warning('Confirmed cases: '+str(int(cyprus_df['total cases'].iloc[-1])))
@@ -48,14 +50,17 @@ def app():
     with col3:
         st.error('Deaths: '+str(int(cyprus_df['total deaths'].iloc[-1])))
 
-
     with col4:
+        st.info('Population Fully Vaccinated: '+str('{0:.2f}'.format(int(cyprus_vac_df['people_fully_vaccinated'].iloc[-1])*100/875899))+"%")
+
+
+    with col5:
         st.subheader("Dates")
         from_date = st.date_input("From Date:",datetime.date(2020, 9, 1))
         to_date = st.date_input("To Date:",datetime.date.today())
         filtered_df = cyprus_df[cyprus_df["date"].isin(pd.date_range(from_date, to_date))]
 
-    with col5:
+    with col6:
         st.subheader("Options")
         if st.checkbox('Logarithmic scale'):
             yaxistype="log"
@@ -67,7 +72,7 @@ def app():
         else:
             plot_df = filtered_df
 
-    with col6:
+    with col7:
         st.subheader("Features")
         multiselection = st.multiselect("", features, default=features)
 
@@ -92,6 +97,14 @@ def app():
 def load_data():
 	#df = pd.read_csv('https://raw.githubusercontent.com/xristofo/streamlit/main/share/data/owid-covid-data-cy.csv',error_bad_lines=False)
     df = pd.read_csv('https://www.data.gov.cy/node/4844/download',error_bad_lines=False)
+    df = data_cleaning(df)
+
+    return df
+
+@st.cache(ttl=60*60*1,allow_output_mutation=True)
+def load_data_vac():
+    #df = pd.read_csv('https://raw.githubusercontent.com/xristofo/streamlit/main/share/data/owid-covid-data-cy.csv',error_bad_lines=False)
+    df = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/country_data/Cyprus.csv',error_bad_lines=False)
     df = data_cleaning(df)
 
     return df
