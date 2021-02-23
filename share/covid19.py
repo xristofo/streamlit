@@ -33,9 +33,10 @@ def app():
         cyprus_vac_df = load_data_vac()
        
     st.text("")
+    cyprus_df['Positively Rate'] = (cyprus_df['daily new cases']/cyprus_df['total_daily tests performed'])*100
 
-    features = ['daily new cases', 'daily deaths', 'Hospitalised Cases', 'Cases In ICUs', 'total_daily tests performed']
-    colors_dict = {'daily new cases':'#1f77b4','daily deaths':'#2ca02c','Hospitalised Cases':'#9467bd','Cases In ICUs':'#e377c2','total_daily tests performed':'#bcbd22'}
+    features = ['daily new cases', 'daily deaths', 'Hospitalised Cases', 'Cases In ICUs', 'total_daily tests performed', 'Positively Rate']
+    colors_dict = {'daily new cases':'#1f77b4','daily deaths':'#2ca02c','Hospitalised Cases':'#9467bd','Cases In ICUs':'#e377c2','total_daily tests performed':'#bcbd22','Positively Rate':'#bc7722'}
 
     #features = ["new_cases","new_deaths","icu_patients","hosp_patients","new_tests","people_vaccinated","people_fully_vaccinated"]
     col1, col2, col3, col4 = st.beta_columns(4)
