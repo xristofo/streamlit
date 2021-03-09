@@ -8,6 +8,7 @@ import datetime
 from datetime import date
 from bokeh.plotting import figure, output_file, show
 from bokeh.palettes import Category10
+from bokeh.models import ColumnDataSource, NumeralTickFormatter, HoverTool
 import numpy as np
 
 
@@ -52,7 +53,7 @@ def app():
         st.error('Deaths: '+str(int(cyprus_df['total deaths'].iloc[-1])))
 
     with col4:
-        st.info('Population Fully Vaccinated: '+str('{0:.2f}'.format(int(cyprus_vac_df['people_fully_vaccinated'].iloc[-1])*100/875899))+"%")
+        st.info('Population Fully Vaccinated: '+str('{0:.2f}'.format(int(cyprus_vac_df['people_fully_vaccinated'].max(skipna=True))*100/875899))+"%")
 
 
     with col5:
@@ -105,8 +106,9 @@ def load_data():
 @st.cache(ttl=60*60*1,allow_output_mutation=True)
 def load_data_vac():
     #df = pd.read_csv('https://raw.githubusercontent.com/xristofo/streamlit/main/share/data/owid-covid-data-cy.csv',error_bad_lines=False)
-    df = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/country_data/Cyprus.csv',error_bad_lines=False)
-    df = data_cleaning(df)
+    #df = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/country_data/Cyprus.csv',error_bad_lines=False)
+    df = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv',error_bad_lines=False)
+    df = data_cleaning(df.loc[df['location'] == 'Cyprus'])
 
     return df
 
@@ -119,6 +121,7 @@ def plot_date(df, selection, colors_dict, yaxistype):
         plot.line(df['date'], df[selected_column], legend_label=selected_column, line_width=2, alpha=0.5, color=linecolor)
 
     plot.legend.location = "top_left"
+
     st.bokeh_chart(plot, use_container_width=True)
 
 def data_cleaning(df):
