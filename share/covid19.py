@@ -68,7 +68,9 @@ def app():
             yaxistype="log"
         else:
             yaxistype="linear"
-
+	
+	
+	st.dataframe(filtered_df)
         if st.checkbox('5 Days Moving Average'):
             plot_df = filtered_df.rolling(5).sum()
         else:
