@@ -70,7 +70,7 @@ def app():
             yaxistype="linear"
 
         if st.checkbox('5 Days Moving Average'):
-            plot_df = filtered_df.rolling(5).mean()
+            plot_df = filtered_df.rolling(5).sum()
         else:
             plot_df = filtered_df
 
